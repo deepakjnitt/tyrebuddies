@@ -1,15 +1,15 @@
-var express = require('express');
-var app = express();
+var http = require('http');
+var fs = require('fs');
 
-// reply to request with "Hello World!"
-app.get('/', function (req, res) {
-  res.sendFile('index.html',{ root : __dirname});
-});
+const PORT=80; 
 
-//start a server on port 80 and log its start to our console
-var server = app.listen(80, function () {
+fs.readFile('./index.html', function (err, html) {
 
-  var port = server.address().port;
-  console.log('Example app listening on port ', port);
+    if (err) throw err;    
 
+    http.createServer(function(request, response) {  
+        response.writeHeader(200, {"Content-Type": "text/html"});  
+        response.write(html);  
+        response.end();  
+    }).listen(PORT);
 });
